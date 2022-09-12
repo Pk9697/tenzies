@@ -1,28 +1,30 @@
 import React from "react";
 import Die from "./Die";
 import { nanoid } from "nanoid";
+import Confetti from "react-confetti";
 
 function App() {
   /**
-   * Challenge: Check the dice array for these winning conditions:
-   * 1. All dice are held, and
-   * 2. all dice have the same value
+   * Challenge: Tie off loose ends!
+   * 1. If tenzies is true, Change the button text to "New Game"
+   * 2. If tenzies is true, use the "react-confetti" package to
+   *    render the <Confetti /> component 🎉
    *
-   * If both conditions are true, set `tenzies` to true and log
-   * "You won!" to the console
+   *    Hint: don't worry about the `height` and `width` props
+   *    it mentions in the documentation.
    */
   const [dice, setDice] = React.useState(allNewDice());
   const [tenzies, setTenzies] = React.useState(false);
 
   React.useEffect(
     function () {
-      const allHeld = dice.every(die => die.isHeld)
-        const firstValue = dice[0].value
-        const allSameValue = dice.every(die => die.value === firstValue)
-        if (allHeld && allSameValue) {
-            setTenzies(true)
-            console.log("You won!") 
-        }
+      const allHeld = dice.every((die) => die.isHeld);
+      const firstValue = dice[0].value;
+      const allSameValue = dice.every((die) => die.value === firstValue);
+      if (allHeld && allSameValue) {
+        setTenzies(true);
+        // console.log("You won!");
+      }
       // let win = true;
       // let checkDie = dice[0].value;
       // for (let i = 0; i < dice.length; i++) {
@@ -85,6 +87,7 @@ function App() {
   return (
     <div className="app-container">
       <div className="app">
+        {tenzies && <Confetti />}
         <h1 className="title">Tenzies</h1>
         <p className="instructions">
           Roll until all dice are the same. Click each die to freeze it at its
@@ -92,7 +95,7 @@ function App() {
         </p>
         <div className="dice-container">{diceElements}</div>
         <button className="roll-dice" onClick={rollDice}>
-          Roll
+          {tenzies ? "New Game" : "Roll"}
         </button>
       </div>
     </div>
