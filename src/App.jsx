@@ -10,6 +10,8 @@ function App() {
   const [dice, setDice] = React.useState(allNewDice());
   const [tenzies, setTenzies] = React.useState(false);
   const [countRolls, setCountRolls] = React.useState(0);
+  const [timeTaken,setTimeTaken]=React.useState(Date.now())
+  console.log(timeTaken);
   React.useEffect(
     function () {
       const allHeld = dice.every((die) => die.isHeld);
@@ -17,6 +19,7 @@ function App() {
       const allSameValue = dice.every((die) => die.value === firstValue);
       if (allHeld && allSameValue) {
         setTenzies(true);
+        setTimeTaken(prevTime=>Date.now() - prevTime);
       }
     },
     [dice]
@@ -54,6 +57,7 @@ function App() {
       setTenzies(false);
       setDice(allNewDice());
       setCountRolls(0);
+      setTimeTaken(Date.now());
     }
   }
 
@@ -88,6 +92,7 @@ function App() {
           {tenzies ? "New Game" : "Roll"}
         </button>
         <div className="count-rolls">Rolls: {countRolls}</div>
+        {tenzies && <div className="count-rolls">Time Taken: {timeTaken/1000} s</div>}
       </div>
     </div>
   );
