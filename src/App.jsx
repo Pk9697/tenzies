@@ -10,8 +10,23 @@ function App() {
   const [dice, setDice] = React.useState(allNewDice());
   const [tenzies, setTenzies] = React.useState(false);
   const [countRolls, setCountRolls] = React.useState(0);
-  const [timeTaken,setTimeTaken]=React.useState(Date.now())
-  console.log(timeTaken);
+  const [timeTaken, setTimeTaken] = React.useState(Date.now());
+  const [personalBest, setPersonalBest] = React.useState(() =>
+    generateInitialBest()
+  );
+  const [personalBestFlag, setPersonalBestFlag] = React.useState(false);
+
+  function generateInitialBest() {
+    if (localStorage.getItem("best") == undefined) {
+      return 200;
+    } else {
+      // console.log(JSON.parse(localStorage.getItem("best")));
+      return JSON.parse(localStorage.getItem("best"));
+    }
+  }
+  // localStorage.removeItem("best");
+  //using fxn to call generateInitialBest cos its expensive to be re rendered again and again Lazy Initialization concept
+
   React.useEffect(
     function () {
       const allHeld = dice.every((die) => die.isHeld);
@@ -19,7 +34,17 @@ function App() {
       const allSameValue = dice.every((die) => die.value === firstValue);
       if (allHeld && allSameValue) {
         setTenzies(true);
-        setTimeTaken(prevTime=>Date.now() - prevTime);
+        let date = Date.now();
+        let time = (date - timeTaken) / 1000;
+        setTimeTaken((prevTime) => date - prevTime);
+        // console.log(time);
+        // console.log(personalBest);
+        if (time < personalBest) {
+          setPersonalBestFlag(true);
+          // console.log("Hurray you have beaten your personal best");
+          localStorage.setItem("best", JSON.stringify(time));
+          setPersonalBest(time);
+        }
       }
     },
     [dice]
@@ -58,6 +83,7 @@ function App() {
       setDice(allNewDice());
       setCountRolls(0);
       setTimeTaken(Date.now());
+      setPersonalBestFlag(false);
     }
   }
 
@@ -92,7 +118,13 @@ function App() {
           {tenzies ? "New Game" : "Roll"}
         </button>
         <div className="count-rolls">Rolls: {countRolls}</div>
-        {tenzies && <div className="count-rolls">Time Taken: {timeTaken/1000} s</div>}
+        {tenzies && (
+          <div className="count-rolls">Time Taken: {timeTaken / 1000} s</div>
+        )}
+        <div className="count-rolls">Personal Best: {personalBest} s</div>
+        {personalBestFlag && (
+          <div>Hurray you have beaten your personal best</div>
+        )}
       </div>
     </div>
   );
