@@ -5,12 +5,11 @@ import Confetti from "react-confetti";
 
 function App() {
   /**
-   * Challenge: Allow the user to play a new game when the
-   * button is clicked and they've already won
+   * Challenge: Count the number of rolls and display it beside Roll
    */
   const [dice, setDice] = React.useState(allNewDice());
   const [tenzies, setTenzies] = React.useState(false);
-
+  const [countRolls, setCountRolls] = React.useState(0);
   React.useEffect(
     function () {
       const allHeld = dice.every((die) => die.isHeld);
@@ -50,9 +49,11 @@ function App() {
           return die.isHeld ? die : generateNewDie();
         })
       );
+      setCountRolls((prevCount) => prevCount + 1);
     } else {
       setTenzies(false);
       setDice(allNewDice());
+      setCountRolls(0);
     }
   }
 
@@ -86,6 +87,7 @@ function App() {
         <button className="roll-dice" onClick={rollDice}>
           {tenzies ? "New Game" : "Roll"}
         </button>
+        <div className="count-rolls">Rolls: {countRolls}</div>
       </div>
     </div>
   );
