@@ -3,13 +3,13 @@ import Die from "./Die";
 import { nanoid } from "nanoid";
 
 function App() {
-  /**
- * Challenge: Update the array of numbers in state to be
- * an array of objects instead. Each object should look like:
- * { value: <random number>, isHeld: false }
+/**
+ * Challenge: Add conditional styling to the Die component
+ * so that if it's held (isHeld === true), its background color
+ * changes to a light green (#59E391)
  * 
- * Making this change will break parts of our code, so make
- * sure to update things so we're back to a working state
+ * Remember: currently the Die component has no way of knowing
+ * if it's "held" or not.
  */
   const [dice, setDice] = React.useState(allNewDice());
 
@@ -18,7 +18,7 @@ function App() {
     for (let i = 0; i < 10; i++) {
       newDice.push({
         value: Math.ceil(Math.random() * 6),
-        isHeld: false,
+        isHeld: true,
         id: nanoid(),
       });
     }
@@ -30,7 +30,7 @@ function App() {
   }
 
   const diceElements = dice.map((die) => (
-    <Die key={die.id} value={die.value} />
+    <Die key={die.id} value={die.value} isHeld={die.isHeld}/>
   ));
 
   return (
