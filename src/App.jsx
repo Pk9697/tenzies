@@ -15,6 +15,8 @@ function App() {
     generateInitialBest()
   );
   const [personalBestFlag, setPersonalBestFlag] = React.useState(false);
+  const [timeFlag, setTimeFlag] = React.useState(true);
+  
 
   function generateInitialBest() {
     if (localStorage.getItem("time") == undefined || localStorage.getItem("rolls") == undefined) {
@@ -61,6 +63,20 @@ function App() {
     },
     [dice]
   );
+  function handleReset(){
+      localStorage.removeItem("time");
+      localStorage.removeItem("rolls");
+      setTenzies(false);
+      setDice(allNewDice());
+      setCountRolls(0);
+      setTimeTaken(Date.now());
+      setPersonalBestFlag(false);
+      setPersonalBest({
+        time:200,
+        rolls:50
+      })
+      setTimeFlag(true)
+  }
 
   function generateNewDie() {
     return {
@@ -96,6 +112,7 @@ function App() {
       setCountRolls(0);
       setTimeTaken(Date.now());
       setPersonalBestFlag(false);
+      setTimeFlag(true);
     }
   }
 
@@ -105,6 +122,13 @@ function App() {
         return die.id === id ? { ...die, isHeld: !die.isHeld } : die;
       })
     );
+    // let flag=true;
+    if(timeFlag && countRolls===0){
+      
+      console.log("entered")
+      setTimeTaken(Date.now());
+      setTimeFlag(false);
+    }
   }
 
   const diceElements = dice.map((die) => (
@@ -137,6 +161,9 @@ function App() {
         {personalBestFlag && (
           <div>Hurray you have beaten your personal best</div>
         )}
+        <button className="roll-dice reset-button" onClick={handleReset}>
+          Reset Personal Best
+        </button>
       </div>
     </div>
   );
