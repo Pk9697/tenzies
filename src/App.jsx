@@ -123,7 +123,7 @@ function App() {
       })
     );
     // let flag=true;
-    if(timeFlag && countRolls===0){
+    if(timeFlag){
       
       console.log("entered")
       setTimeTaken(Date.now());
