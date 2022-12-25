@@ -159,7 +159,7 @@ function App() {
         )}
         <div className="count-rolls">Personal Best: {personalBest.time}s with {personalBest.rolls} rolls</div>
         {personalBestFlag && (
-          <div>Hurray you have beaten your personal best</div>
+          <div className="count-rolls">Hurray you have beaten your personal best</div>
         )}
         <button className="roll-dice reset-button" onClick={handleReset}>
           Reset Personal Best
